@@ -26,7 +26,7 @@
 #define GPIOA_BASE			(AHB1PERIPH_BASE + 0x0000UL)
 #define GPIOD_BASE			(AHB1PERIPH_BASE + 0x0C00UL)
 #define RCC_BASE			(AHB1PERIPH_BASE + 0x3800UL)
-//change code
+//change code blinked led
 
 typedef struct
 {
