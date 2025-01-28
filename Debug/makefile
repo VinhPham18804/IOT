@@ -51,9 +51,6 @@ default.size.stdout \
 OBJDUMP_LIST += \
 002Blinked_Led.list \
 
-OBJCOPY_HEX += \
-002Blinked_Led.hex \
-
 
 # All Target
 all: main-build
@@ -62,8 +59,8 @@ all: main-build
 main-build: 002Blinked_Led.elf secondary-outputs
 
 # Tool invocations
-002Blinked_Led.elf 002Blinked_Led.map: $(OBJS) $(USER_OBJS) C:\stm32project\002Blinked_Led\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "002Blinked_Led.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\stm32project\002Blinked_Led\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="002Blinked_Led.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+002Blinked_Led.elf 002Blinked_Led.map: $(OBJS) $(USER_OBJS) E:\stm\002Blinked_Led\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "002Blinked_Led.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"E:\stm\002Blinked_Led\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="002Blinked_Led.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -77,17 +74,12 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-002Blinked_Led.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "002Blinked_Led.hex"
-	@echo 'Finished building: $@'
-	@echo ' '
-
 # Other Targets
 clean:
-	-$(RM) 002Blinked_Led.elf 002Blinked_Led.hex 002Blinked_Led.list 002Blinked_Led.map default.size.stdout
+	-$(RM) 002Blinked_Led.elf 002Blinked_Led.list 002Blinked_Led.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

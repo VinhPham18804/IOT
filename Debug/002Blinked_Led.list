@@ -39,15 +39,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  00000fa6  00000000  00000000  00001786  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00000520  00000000  00000000  0000272c  2**0
+ 18 .debug_line   00000523  00000000  00000000  0000272c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    00003da2  00000000  00000000  00002c4c  2**0
+ 19 .debug_str    00003d99  00000000  00000000  00002c4f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000043  00000000  00000000  000069ee  2**0
+ 20 .comment      00000043  00000000  00000000  000069e8  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  000000bc  00000000  00000000  00006a34  2**2
+ 21 .debug_frame  000000bc  00000000  00000000  00006a2c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_line_str 00000048  00000000  00000000  00006af0  2**0
+ 22 .debug_line_str 0000003f  00000000  00000000  00006ae8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -80,25 +80,25 @@ Disassembly of section .text:
  80001c0:	20000004 	.word	0x20000004
  80001c4:	08000350 	.word	0x08000350
 
-080001c8 <clock_Init>:
+080001c8 <Clock_Init>:
 
-#define PA				((GPIO_OFF *) GPIOA_BASE)
-#define PC				((GPIO_OFF *) GPIOC_BASE)
+#define PA					((GPIO_OFF *)GPIOA_BASE)
+#define PD					((GPIO_OFF *)GPIOD_BASE)
 
-void clock_Init(void)
+void Clock_Init(void)
 {
  80001c8:	b480      	push	{r7}
  80001ca:	af00      	add	r7, sp, #0
 	RCC->CR |= (1<<0);
- 80001cc:	4b07      	ldr	r3, [pc, #28]	@ (80001ec <clock_Init+0x24>)
+ 80001cc:	4b07      	ldr	r3, [pc, #28]	@ (80001ec <Clock_Init+0x24>)
  80001ce:	681b      	ldr	r3, [r3, #0]
- 80001d0:	4a06      	ldr	r2, [pc, #24]	@ (80001ec <clock_Init+0x24>)
+ 80001d0:	4a06      	ldr	r2, [pc, #24]	@ (80001ec <Clock_Init+0x24>)
  80001d2:	f043 0301 	orr.w	r3, r3, #1
  80001d6:	6013      	str	r3, [r2, #0]
 	RCC->AHB1 |= (1<<0) | (1<<2);
- 80001d8:	4b04      	ldr	r3, [pc, #16]	@ (80001ec <clock_Init+0x24>)
+ 80001d8:	4b04      	ldr	r3, [pc, #16]	@ (80001ec <Clock_Init+0x24>)
  80001da:	6b1b      	ldr	r3, [r3, #48]	@ 0x30
- 80001dc:	4a03      	ldr	r2, [pc, #12]	@ (80001ec <clock_Init+0x24>)
+ 80001dc:	4a03      	ldr	r2, [pc, #12]	@ (80001ec <Clock_Init+0x24>)
  80001de:	f043 0305 	orr.w	r3, r3, #5
  80001e2:	6313      	str	r3, [r2, #48]	@ 0x30
 }
@@ -108,8 +108,8 @@ void clock_Init(void)
  80001ea:	4770      	bx	lr
  80001ec:	40023800 	.word	0x40023800
 
-080001f0 <myDelay>:
-void myDelay(uint32_t time)
+080001f0 <Delay_Init>:
+void Delay_Init(uint32_t time)
 {
  80001f0:	b480      	push	{r7}
  80001f2:	b085      	sub	sp, #20
@@ -117,24 +117,24 @@ void myDelay(uint32_t time)
  80001f6:	6078      	str	r0, [r7, #4]
 	uint32_t i;
 	while(time--)
- 80001f8:	e009      	b.n	800020e <myDelay+0x1e>
+ 80001f8:	e009      	b.n	800020e <Delay_Init+0x1e>
 	{
-		for(i=0;i<1000;i++);
+		for(i = 0; i < 1000; i++);
  80001fa:	2300      	movs	r3, #0
  80001fc:	60fb      	str	r3, [r7, #12]
- 80001fe:	e002      	b.n	8000206 <myDelay+0x16>
+ 80001fe:	e002      	b.n	8000206 <Delay_Init+0x16>
  8000200:	68fb      	ldr	r3, [r7, #12]
  8000202:	3301      	adds	r3, #1
  8000204:	60fb      	str	r3, [r7, #12]
  8000206:	68fb      	ldr	r3, [r7, #12]
  8000208:	f5b3 7f7a 	cmp.w	r3, #1000	@ 0x3e8
- 800020c:	d3f8      	bcc.n	8000200 <myDelay+0x10>
+ 800020c:	d3f8      	bcc.n	8000200 <Delay_Init+0x10>
 	while(time--)
  800020e:	687b      	ldr	r3, [r7, #4]
  8000210:	1e5a      	subs	r2, r3, #1
  8000212:	607a      	str	r2, [r7, #4]
  8000214:	2b00      	cmp	r3, #0
- 8000216:	d1f0      	bne.n	80001fa <myDelay+0xa>
+ 8000216:	d1f0      	bne.n	80001fa <Delay_Init+0xa>
 	}
 }
  8000218:	bf00      	nop
@@ -145,86 +145,92 @@ void myDelay(uint32_t time)
  8000222:	4770      	bx	lr
 
 08000224 <GPIO_Init>:
+
 void GPIO_Init(void)
 {
  8000224:	b580      	push	{r7, lr}
  8000226:	af00      	add	r7, sp, #0
-	clock_Init();
- 8000228:	f7ff ffce 	bl	80001c8 <clock_Init>
-	PC->PU |= (1<<26); //GPIOC.13 input pullup
+	Clock_Init();
+ 8000228:	f7ff ffce 	bl	80001c8 <Clock_Init>
+	PA->MODE |= (1<<6); //GPIOA.3 mode output
  800022c:	4b0c      	ldr	r3, [pc, #48]	@ (8000260 <GPIO_Init+0x3c>)
- 800022e:	699b      	ldr	r3, [r3, #24]
+ 800022e:	681b      	ldr	r3, [r3, #0]
  8000230:	4a0b      	ldr	r2, [pc, #44]	@ (8000260 <GPIO_Init+0x3c>)
- 8000232:	f043 6380 	orr.w	r3, r3, #67108864	@ 0x4000000
- 8000236:	6193      	str	r3, [r2, #24]
-	PA->MODE |= (1<<10); //GPIOA.5 moder5 output
- 8000238:	4b0a      	ldr	r3, [pc, #40]	@ (8000264 <GPIO_Init+0x40>)
- 800023a:	681b      	ldr	r3, [r3, #0]
- 800023c:	4a09      	ldr	r2, [pc, #36]	@ (8000264 <GPIO_Init+0x40>)
- 800023e:	f443 6380 	orr.w	r3, r3, #1024	@ 0x400
- 8000242:	6013      	str	r3, [r2, #0]
-	PA->TYPE &= ~(1<<5); //GPIOA.5 type push-pull mode
- 8000244:	4b07      	ldr	r3, [pc, #28]	@ (8000264 <GPIO_Init+0x40>)
- 8000246:	685b      	ldr	r3, [r3, #4]
- 8000248:	4a06      	ldr	r2, [pc, #24]	@ (8000264 <GPIO_Init+0x40>)
- 800024a:	f023 0320 	bic.w	r3, r3, #32
- 800024e:	6053      	str	r3, [r2, #4]
-	PA->SPEED |= (1<<10); //GPIOA.5 speed medium speed
+ 8000232:	f043 0340 	orr.w	r3, r3, #64	@ 0x40
+ 8000236:	6013      	str	r3, [r2, #0]
+	PA->TYPE &= ~(1<<3); //GPIOA.3 pushpull output
+ 8000238:	4b09      	ldr	r3, [pc, #36]	@ (8000260 <GPIO_Init+0x3c>)
+ 800023a:	685b      	ldr	r3, [r3, #4]
+ 800023c:	4a08      	ldr	r2, [pc, #32]	@ (8000260 <GPIO_Init+0x3c>)
+ 800023e:	f023 0308 	bic.w	r3, r3, #8
+ 8000242:	6053      	str	r3, [r2, #4]
+	PA->SPEED |= (1<<6); //GPIOA.3 medium speed
+ 8000244:	4b06      	ldr	r3, [pc, #24]	@ (8000260 <GPIO_Init+0x3c>)
+ 8000246:	689b      	ldr	r3, [r3, #8]
+ 8000248:	4a05      	ldr	r2, [pc, #20]	@ (8000260 <GPIO_Init+0x3c>)
+ 800024a:	f043 0340 	orr.w	r3, r3, #64	@ 0x40
+ 800024e:	6093      	str	r3, [r2, #8]
+	PD->PU |= (1<<20); //GPIOD.10 pullup
  8000250:	4b04      	ldr	r3, [pc, #16]	@ (8000264 <GPIO_Init+0x40>)
- 8000252:	689b      	ldr	r3, [r3, #8]
+ 8000252:	699b      	ldr	r3, [r3, #24]
  8000254:	4a03      	ldr	r2, [pc, #12]	@ (8000264 <GPIO_Init+0x40>)
- 8000256:	f443 6380 	orr.w	r3, r3, #1024	@ 0x400
- 800025a:	6093      	str	r3, [r2, #8]
+ 8000256:	f443 1380 	orr.w	r3, r3, #1048576	@ 0x100000
+ 800025a:	6193      	str	r3, [r2, #24]
 }
  800025c:	bf00      	nop
  800025e:	bd80      	pop	{r7, pc}
- 8000260:	40020800 	.word	0x40020800
- 8000264:	40020000 	.word	0x40020000
+ 8000260:	40020000 	.word	0x40020000
+ 8000264:	40020c00 	.word	0x40020c00
 
 08000268 <main>:
+#if !defined(__SOFT_FP__) && defined(__ARM_FP)
+  #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
+#endif
+
 int main(void)
 {
  8000268:	b580      	push	{r7, lr}
  800026a:	af00      	add	r7, sp, #0
-    clock_Init();
- 800026c:	f7ff ffac 	bl	80001c8 <clock_Init>
-    GPIO_Init();
+	Clock_Init();
+ 800026c:	f7ff ffac 	bl	80001c8 <Clock_Init>
+	GPIO_Init();
  8000270:	f7ff ffd8 	bl	8000224 <GPIO_Init>
-    PA->OUT |= (1<<5);
+	PA->OUT |= (1<<3);
  8000274:	4b0d      	ldr	r3, [pc, #52]	@ (80002ac <main+0x44>)
  8000276:	691b      	ldr	r3, [r3, #16]
  8000278:	4a0c      	ldr	r2, [pc, #48]	@ (80002ac <main+0x44>)
- 800027a:	f043 0320 	orr.w	r3, r3, #32
+ 800027a:	f043 0308 	orr.w	r3, r3, #8
  800027e:	6113      	str	r3, [r2, #16]
-    for(;;)
-    {
-    	if((PC->IN & (1<<13))==0)
+    /* Loop forever */
+	for(;;)
+	{
+		if((PD->IN & (1<<10))==0)
  8000280:	4b0b      	ldr	r3, [pc, #44]	@ (80002b0 <main+0x48>)
  8000282:	68db      	ldr	r3, [r3, #12]
- 8000284:	f403 5300 	and.w	r3, r3, #8192	@ 0x2000
+ 8000284:	f403 6380 	and.w	r3, r3, #1024	@ 0x400
  8000288:	2b00      	cmp	r3, #0
  800028a:	d1f9      	bne.n	8000280 <main+0x18>
-    		{
-    			myDelay(20);
+		{
+			Delay_Init(20);
  800028c:	2014      	movs	r0, #20
- 800028e:	f7ff ffaf 	bl	80001f0 <myDelay>
-    			if((PC->IN & (1<<13))==0)
+ 800028e:	f7ff ffaf 	bl	80001f0 <Delay_Init>
+			if((PD->IN & (1<<10))==0)
  8000292:	4b07      	ldr	r3, [pc, #28]	@ (80002b0 <main+0x48>)
  8000294:	68db      	ldr	r3, [r3, #12]
- 8000296:	f403 5300 	and.w	r3, r3, #8192	@ 0x2000
+ 8000296:	f403 6380 	and.w	r3, r3, #1024	@ 0x400
  800029a:	2b00      	cmp	r3, #0
  800029c:	d1f0      	bne.n	8000280 <main+0x18>
-    			{
-    				PA->OUT ^= (1<<5);
+			{
+				PA->OUT ^= (1<<3);
  800029e:	4b03      	ldr	r3, [pc, #12]	@ (80002ac <main+0x44>)
  80002a0:	691b      	ldr	r3, [r3, #16]
  80002a2:	4a02      	ldr	r2, [pc, #8]	@ (80002ac <main+0x44>)
- 80002a4:	f083 0320 	eor.w	r3, r3, #32
+ 80002a4:	f083 0308 	eor.w	r3, r3, #8
  80002a8:	6113      	str	r3, [r2, #16]
-    	if((PC->IN & (1<<13))==0)
+		if((PD->IN & (1<<10))==0)
  80002aa:	e7e9      	b.n	8000280 <main+0x18>
  80002ac:	40020000 	.word	0x40020000
- 80002b0:	40020800 	.word	0x40020800
+ 80002b0:	40020c00 	.word	0x40020c00
 
 080002b4 <Reset_Handler>:
 
